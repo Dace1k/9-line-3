@@ -1,3 +1,20 @@
 spring:
   application:
     name: 9-line-request
+  datasource:
+    url: jdbc:postgresql://localhost:5436/todo
+    driver-class-name: org.postgresql.Driver
+    username: 9line_dev
+    password: 9line_dev12
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
