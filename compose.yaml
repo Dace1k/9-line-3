@@ -1,0 +1,16 @@
+services:
+  postgres-db:
+    container_name: 9line
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: 9line_dev
+      POSTGRES_PASSWORD: 9line_dev12
+      POSTGRES_DB: 9line
+      POSTGRES_HOST_AUTH_METHOD: password
+    ports:
+      - "5434:5432"
+
+volumes:
+  postgresql_data:
+    driver: local
