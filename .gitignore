@@ -12,5 +12,5 @@
 .idea
 DS_STORE
 
-/build/
-.gradle
+build/
+.gradle/
