@@ -9,4 +9,11 @@ describe('Requester', () =>{
         expect(screen.getByRole("heading",{name: "Requester page"})).toBeVisible()
     })
 
+    it('should render location field', () => {
+            render(<Requester />)
+        screen.logTestingPlaygroundURL()
+        expect(screen.getByRole("textbox",{name: ""})).toBeVisible()
+
+    });
+
 })
