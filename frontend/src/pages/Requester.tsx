@@ -1,11 +1,26 @@
-function Requester () {
+function Requester() {
     return (
         <>
-            <h1>Requester page</h1>
+            <div>
+                <h1>Requester page</h1>
 
+                <form action="">
+                    <label htmlFor="">Location
+                    <input type="text" />
+                    </label>
+
+
+
+
+
+
+
+                </form>
+            </div>
 
         </>
     )
 
 }
+
 export default Requester;
