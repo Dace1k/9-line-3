@@ -2,7 +2,7 @@ spring:
   application:
     name: 9-line-request
   datasource:
-    url: jdbc:postgresql://localhost:5436/todo
+    url: jdbc:postgresql://localhost:5434/9line
     driver-class-name: org.postgresql.Driver
     username: 9line_dev
     password: 9line_dev12
