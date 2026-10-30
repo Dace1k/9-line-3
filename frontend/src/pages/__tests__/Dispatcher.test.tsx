@@ -68,5 +68,15 @@ describe('dispatcherPage', () => {
         expect(screen.getByRole('cell', {name: sample9Line[0].details})).toBeVisible()
 
     });
+    it('should show checkboxes', () => {
+        render(<Dispatcher/>);
 
+        const checkboxes = screen.getAllByRole('checkbox');
+
+        expect(checkboxes).toHaveLength(sample9Line.length + 1);
+
+        checkboxes.forEach((checkbox) => {
+            expect(checkbox).toBeVisible();
+        });
+    })
 });

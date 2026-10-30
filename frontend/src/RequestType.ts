@@ -19,7 +19,19 @@ export const sample9Line:RequestType[] =[
         marking: 'Panels',
         details: 'View'
 
+    },
+
+    {
+        location: 'Orlando',
+        callSign: 'Callsign12',
+        precedence: 'Convenience',
+        specialEquipment: 'Hoist',
+        security: 'Troops in the area',
+        marking: 'Smoke signal',
+        details: 'View'
+
     }
+
 
 ]
 
