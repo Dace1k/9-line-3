@@ -2,7 +2,7 @@ package mil.army.ninelineteamthree.request;
 
 public class RequestBuilder {
 
-    private Long id=1L;
+    private Long id;
     private String location = "location";
 
     public static RequestBuilder request(){
