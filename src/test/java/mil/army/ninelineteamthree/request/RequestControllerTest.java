@@ -1,6 +1,9 @@
 package mil.army.ninelineteamthree.request;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -8,6 +11,9 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.json.JsonMapper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static mil.army.ninelineteamthree.request.RequestBuilder.request;
 import static org.hamcrest.Matchers.matchesPattern;
@@ -31,6 +37,18 @@ class RequestControllerTest {
     @MockitoBean
     RequestService requestService;
 
+    @Captor
+    ArgumentCaptor<Request> captor = ArgumentCaptor.forClass(Request.class);
+
+    Request newRequest;
+
+    @BeforeEach
+    void setUp() {
+        List<Request> requests = new ArrayList<>();
+        newRequest = new Request(1L, "your house");
+    }
+
+
     @Test
     void shouldCreateNewRequestUsingPostTest() throws Exception {
         var body = request().build();
@@ -39,10 +57,11 @@ class RequestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(jsonMapper.writeValueAsString(body)))
 
-                .andExpect(status().isCreated());
-
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.location").value("your house"));
         verify(requestService, only()).createRequest(body);
 
     }
+
 
 }
