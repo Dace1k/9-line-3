@@ -8,7 +8,7 @@ type requestList = () => Promise<Request[]>;
 
 
 export const saveRequest: requestPromise = (request: Request) => {
-    return fetch(apiBaseURL + "api/request", {
+    return fetch(apiBaseURL + "/api/request", {
         method: 'POST',
         headers:
             {
@@ -21,7 +21,7 @@ export const saveRequest: requestPromise = (request: Request) => {
 };
 
 export const fetchAllRequests: requestList = async ()=>{
-    return fetch(apiBaseURL + "api/request", {
+    return fetch(apiBaseURL + "/api/request", {
         method:'GET',
     })
         .then((response) => {
