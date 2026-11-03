@@ -1,6 +1,6 @@
 // import tailwindcss from "@tailwindcss/vite";
 import {sample9Line} from "../RequestType.ts";
-import {data} from "react-router-dom";
+// import {data} from "react-router-dom";
 
 
 export function Dispatcher () {
