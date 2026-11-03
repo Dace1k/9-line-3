@@ -1,24 +1,32 @@
+import type {Request} from "../RequestType";
 
+const apiBaseURL = "http://localhost:8080";
 
-function Requester() {
-    return (
-        <>
-            <div>
-                <h1>Requester page</h1>
-
-                <form action="">
-                    <label htmlFor="">Location
-                        <input type="text"/>
-                    </label>
+type requestPromise = (request: Request) => Promise<Request>;
+type requestList = () => Promise<Request[]>;
 
 
 
-                </form>
-            </div>
+export const saveRequest: requestPromise = (request: Request) => {
+    return fetch(apiBaseURL + "api/request", {
+        method: 'POST',
+        headers:
+            {
+                'Content-Type': 'application/json',
+            },
+        body: JSON.stringify(request)
+    }).then((response) => {
+        return response.json();
+    })
+};
 
-        </>
-    )
-
+export const fetchAllRequests: requestList = async ()=>{
+    return fetch(apiBaseURL + "api/request", {
+        method:'GET',
+    })
+        .then((response) => {
+            return response.json();
+        })
 }
 
-export default Requester;
+

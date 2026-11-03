@@ -1,6 +1,8 @@
-import Requester from "../Requester.tsx";
+import {Requester} from "../Requester.tsx";
 import { expect } from "vitest";
 import { render, screen } from "@testing-library/react"
+
+
 
 describe('Requester', () =>{
 
@@ -15,5 +17,7 @@ describe('Requester', () =>{
         expect(screen.getByRole("textbox",{name: ""})).toBeVisible()
 
     });
+
+
 
 })

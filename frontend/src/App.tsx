@@ -2,7 +2,8 @@
 import {Link, BrowserRouter, Routes, Route} from 'react-router-dom'
 
 import './App.css'
-import Requester from "./pages/Requester.tsx";
+import {Requester} from "./pages/Requester.tsx";
+
 import Responder from "./pages/Responder.tsx";
 import {Dispatcher} from "./pages/Dispatcher.tsx";
 
