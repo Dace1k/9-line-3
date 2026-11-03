@@ -12,19 +12,15 @@ function App() {
     return (
         <>
             <BrowserRouter>
+                <h4>
                 <section id="center">
-
                     <nav className="NavBar">
-                        <Link to="pages/Requester">Requester</Link>
-                        <br/>
-                        <Link to="pages/Responder">Responder</Link>
-                        <br/>
-                        <Link to="pages/Dispatcher">Dispatcher</Link>
-                        <br/>
+                        <Link to="/pages/requester">Requester</Link>
+                        <Link to="/pages/responder">Responder</Link>
+                        <Link to="/pages/dispatcher">Dispatcher</Link>
                     </nav>
-
-
                 </section>
+                    </h4>
 
                 <section>
                     <Routes>

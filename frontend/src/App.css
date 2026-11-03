@@ -181,4 +181,11 @@
     right: 0;
     border-right-color: var(--border);
   }
+
+  .NavBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+  }
 }
