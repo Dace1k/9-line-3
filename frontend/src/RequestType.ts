@@ -4,18 +4,6 @@ export type Request = {
 
 }
 
-
-
-export interface RequestType {
-    location:string;
-    callSign:string;
-    precedence: string;
-    specialEquipment: string;
-    security: string;
-    marking: string;
-    details: string;
-}
-
 export interface RequestType {
     location: string;
     callSign: string;
