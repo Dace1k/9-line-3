@@ -1,12 +1,27 @@
 import { sample9Line } from "../RequestType.ts";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DispatchModal from "../components/DispatchModal.tsx";
 import ViewModal from "../components/ViewModal.tsx";
+import { fetchAllRequests } from "../nineLineApi/NineLineApis.ts";
+import type { Request } from "../RequestType.ts";
 
 export function Dispatcher() {
     const [selectedRows, setSelectedRows] = useState<number[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [viewRowIndex, setViewRowIndex] = useState<number | null>(null);
+
+    const [requests, setRequests] = useState<Request[]>([]);
+
+    useEffect(() => {
+        fetchAllRequests()
+            .then((data) => {
+                console.log("Backend requests:", data);
+                setRequests(data);
+            })
+            .catch((error) => {
+                console.error("Failed to load requests:", error);
+            });
+    }, []);
 
     const handleCheckboxChange = (index: number, isChecked: boolean) => {
         setSelectedRows((previous) =>
@@ -78,7 +93,9 @@ export function Dispatcher() {
                         </button>
                     </div>
                 )}
-
+                <p className="mb-4 text-gray-600">
+                    Requests loaded from backend: {requests.length}
+                </p>
                 <div className="w-full overflow-x-auto">
                     <table
                         className="w-full table-auto text-left text-base text-black"

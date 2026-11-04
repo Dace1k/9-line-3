@@ -1,6 +1,7 @@
 package mil.army.ninelineteamthree.request;
 
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class RequestService {
@@ -14,4 +15,8 @@ public class RequestService {
         return requestRepository.save(request);
 
     }
+    public List<Request> getAllRequests() {
+        return requestRepository.findAll();
+    }
+
 }

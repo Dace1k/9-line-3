@@ -1,9 +1,9 @@
+
 package mil.army.ninelineteamthree.request;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/request")
@@ -21,4 +21,8 @@ public class RequestController {
         return requestService.createRequest(request);
     }
 
+    @GetMapping
+    public List<Request> getAllRequests() {
+        return requestService.getAllRequests();
+    }
 }
