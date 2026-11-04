@@ -1,37 +1,52 @@
-import {type FormEvent, useState} from "react";
+import {type ChangeEvent, type FormEvent, useState} from "react";
 import {saveRequest} from "../nineLineApi/NineLineApis.ts";
 
 export function NineLineRequestForm() {
-    const [formData, setFormData] = useState({location: ""});
+    const [formData, setFormData] = useState({location: "", contact: ""});
     const [locationValid, setLocationValid] = useState(true)
+    const [contactValid, setContactValid] = useState(true)
 
-
-    function handleSubmit(event: FormEvent) {
+    async function handleSubmit(event: FormEvent) {
         event.preventDefault()
-
-        try {
-            if (locationValid) {
-                saveRequest(formData)
-                alert(`Nine Line Location Submitted = ${formData.location}`);
-            } else {
-                throw new Error("Bad location");
-            }
-        } catch (err) {
-            alert(err)
+        if (!locationValid || !contactValid) {
+            alert("please check form for invalid inputs")
+            return;
         }
-
-
+        try {
+            const savedRequest = await saveRequest(formData)
+            alert(`nine line submitted. ref ID: ${savedRequest.id}`);
+        } catch (err) {
+            alert(err instanceof Error ? err.message : "Request could not be submitted");
+        }
     }
+
 
     function isValidLocation(value: string): boolean {
         const mgrsPattern = /^\d{1,2}[C-HJ-NP-X]\s?[A-HJ-NP-Z]{2}\s?\d{4}\s?\d{4}$/;
         return mgrsPattern.test(value.trim());
     }
 
-    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-        const {name, value} = event.target;
-        setFormData((prevState) => ({...prevState, [name]: value}));
-        setLocationValid(isValidLocation(value));
+
+    function isValidContact(value: string): boolean {
+        if (value.trim() === "") {
+            return false;
+        }
+        return true;
+    }
+
+
+    function handleChange(event: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = event.target;
+
+        setFormData({ ...formData, [name]: value });
+
+        if (name === "location") {
+            setLocationValid(isValidLocation(value));
+        }
+
+        if (name === "contact") {
+            setContactValid(isValidContact(value));
+        }
     }
 
 
@@ -49,16 +64,21 @@ export function NineLineRequestForm() {
                                    id="location" name="location" type="text" required
                                    className="relative mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3"
                                    placeholder="MGRS"/>
-                            {locationValid ? <></> : <p role="locationError">errors does not = MGRS</p>}
+                            {locationValid ? <></> : <p role="locationError">Invalid Location</p>}
                         </div>
-                        {/*<div>*/}
-                        {/*    <label htmlFor="password"*/}
-                        {/*           className="block text-sm font-medium leading-6 text-gray-900">Password</label>*/}
-                        {/*    <input id="password" name="password" type="password" autoComplete="current-password"*/}
-                        {/*           required*/}
-                        {/*           className="relative mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3"*/}
-                        {/*           placeholder="••••••••"/>*/}
-                        {/*</div>*/}
+                    </div>
+                    <div className="space-y-4 rounded-md">
+                        <div>
+                            <label htmlFor="contact"
+                                   className="block text-sm font-medium leading-6 text-gray-900">Radio Frequency /
+                                Call-sign / Suffix</label>
+                            <input onChange={handleChange}
+
+                                   id="contact" name="contact" type="text" required
+                                   className="relative mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3"
+                                   placeholder="Radio Frequency / Call-sign / Suffix"/>
+                            {contactValid ? <></> : <p role="contactError">Required Field</p>}
+                        </div>
                     </div>
 
                     <div className="flex items-center justify-between">
