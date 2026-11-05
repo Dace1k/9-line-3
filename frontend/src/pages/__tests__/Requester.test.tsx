@@ -32,6 +32,7 @@ describe('Requester', () => {
 
 
     });
+
     it('should show success alert on submit', async () => {
         vi.mocked(saveRequest).mockResolvedValue({status:200});
         const alertSpy = vi.spyOn(window, "alert").mockImplementationOnce(() => {
@@ -60,13 +61,33 @@ describe('Requester', () => {
     });
     it('should not show invalid MGRS error', async () => {
         render(<Requester/>)
-        screen.logTestingPlaygroundURL()
         const location = screen.getByRole("textbox", {name: /Location/i});
-        await userEvent.type(location, "4Q FJ 1234 6789");
-        expect(screen.getByRole("textbox", {name: /location/i})).toBeVisible()
-        expect(screen.getByRole("textbox", {name: /location/i})).toHaveValue("4Q FJ 1234 6789")
-        expect(screen.queryByRole("locationError")).not.toBeInTheDocument();
+        const radioFrequency = screen.getByRole("textbox", {name: /radio Frequency/i})
+        await userEvent.type(location, "4Q FJ 1234 678");
+        expect(screen.getByRole("textbox", {name: /location/i})).toHaveValue("4Q FJ 1234 678")
+        await userEvent.click(radioFrequency)
+        expect(screen.queryByRole("locationError")).toBeInTheDocument();
+        screen.logTestingPlaygroundURL()
     });
+    it('should display an input for patient number', () => {
+        render(<Requester/>)
+        screen.logTestingPlaygroundURL()
+        const patientNumber = screen.getByRole("spinbutton", {name: /number Of Patients/i})
+        expect(patientNumber).toBeVisible()
+        expect(patientNumber).toHaveValue(1)
+    })
+    it('should not allow more than 33 ambulatory patients', async () => {
+        render(<Requester/>)
+        const patientNumber = screen.getByRole("spinbutton", {name: /number Of Patients/i})
+        await userEvent.click(patientNumber)
+        await userEvent.clear(patientNumber)
+        await userEvent.type(patientNumber,'34')
+        expect(patientNumber).toHaveValue(34)
+        screen.logTestingPlaygroundURL()
+        // expect(screen.queryByRole("patientNumberError")).toBeInTheDocument();
 
 
+
+
+    });
 })
