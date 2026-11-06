@@ -25,7 +25,14 @@ public class Request {
     private String patientNationality;
     private String nbcContamination;
 
+    // Required by JPA
     public Request() {
+    }
+
+    // Used by RequestBuilder and tests
+    public Request(Long id, String location) {
+        this.id = id;
+        this.location = location;
     }
 
     public Long getId() {
