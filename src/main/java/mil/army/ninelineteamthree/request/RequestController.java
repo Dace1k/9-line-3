@@ -1,4 +1,3 @@
-
 package mil.army.ninelineteamthree.request;
 
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,7 @@ public class RequestController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Request CreateNewRequest(@RequestBody Request request) {
+    public Request createNewRequest(@RequestBody Request request) {
         return requestService.createRequest(request);
     }
 
