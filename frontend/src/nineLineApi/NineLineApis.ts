@@ -23,10 +23,8 @@ export const saveRequest: requestPromise = async (request: Request) => {
 };
 
 // GET - Retrieve all MEDEVAC requests
-export const fetchAllRequests: requestList = async () => {
-    const response = await fetch(apiBaseURL + "/api/request", {
-        method: "GET",
-    });
+export const fetchAllRequests = async (): Promise<Request[]> => {
+    const response = await fetch("http://localhost:8080/api/request");
 
     if (!response.ok) {
         throw new Error("Failed to fetch MEDEVAC requests");
