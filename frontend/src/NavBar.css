@@ -1,0 +1,11 @@
+.NavBar {
+
+    display: flex;
+    justify-content: space-between; /* Pushes logo left and links right */
+    align-items: center; /* Centers items vertically */
+    background-color: #333; /* Dark background color */
+    padding: 1rem 2rem; /* Top/Bottom and Left/Right padding */
+    position: sticky; /* Keeps navbar at the top while scrolling */
+    top: 0;
+    z-index: 100;
+}

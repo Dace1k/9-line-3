@@ -69,10 +69,11 @@ describe('Requester', () => {
         expect(screen.queryByRole("locationError")).toBeInTheDocument();
         screen.logTestingPlaygroundURL()
     });
-    it('should display an input for patient number', () => {
+    it('should display an input for patient number', async () => {
         render(<Requester/>)
         screen.logTestingPlaygroundURL()
         const patientNumber = screen.getByRole("spinbutton", {name: /number Of Patients/i})
+        await userEvent.type(patientNumber,"1")
         expect(patientNumber).toBeVisible()
         expect(patientNumber).toHaveValue(1)
     })
