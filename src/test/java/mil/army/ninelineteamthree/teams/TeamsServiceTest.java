@@ -19,6 +19,9 @@ class TeamsServiceTest {
     @InjectMocks
     private TeamsService teamsService;
 
-
+    @Test
+    void shouldInitializeTeamsService() {
+        assertNotNull(teamsService);
+    }
 
 }

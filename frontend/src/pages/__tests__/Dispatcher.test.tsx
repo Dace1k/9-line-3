@@ -1,131 +1,160 @@
 // @vitest-environment jsdom
-import { Dispatcher } from "../Dispatcher.tsx";
-import { render, screen, fireEvent,waitFor} from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
-import { sample9Line } from "../../RequestType.ts";
 
-// Mock API calls so tests don't require the backend
-vi.mock("../../nineLineApi/NineLineApis.ts", () => ({
-    fetchAllRequests: vi.fn().mockResolvedValue([]),
+import {Dispatcher} from "../Dispatcher.tsx";
+import {
+    render, screen, fireEvent, waitFor, act} from "@testing-library/react";
+import {describe, it, expect, vi, beforeEach} from "vitest";
+import {sample9Line} from "../../RequestType.ts";
+import {fetchAllRequests} from "../../nineLineApi/NineLineApis.ts";
+
+// Mock API calls so tests don't need the backend running
+vi.mock("../../nineLineApi/NineLineApis.ts", () => ({fetchAllRequests: vi.fn().mockResolvedValue([])
 }));
+
+// Render the component and finish its asynchronous state updates
+async function renderDispatcher() {
+    await act(async () => {
+        render(<Dispatcher/>);
+    });
+}
 
 describe("dispatcherPage", () => {
 
-    it("should display heading for dispatcher page", () => {
-        render(<Dispatcher />);
+    beforeEach(() => {
+        vi.clearAllMocks();
+        vi.mocked(fetchAllRequests).mockResolvedValue([]);
+    });
+
+    it("should display heading for dispatcher page", async () => {
+        await renderDispatcher();
 
         expect(
             screen.getByRole("heading", {
-                name: "Outstanding MEDEVAC Requests",
+                name: "Outstanding MEDEVAC Requests"
             })
         ).toBeVisible();
     });
 
-
-    it("should show location and data in table", () => {
-        render(<Dispatcher />);
+    it("should show location and data in table", async () => {
+        await renderDispatcher();
 
         expect(
-            screen.getByRole("table", { name: /dispatchTable/i })
+            screen.getByRole("table", {
+                name: /dispatchTable/i
+            })
         ).toBeInTheDocument();
 
         expect(
-            screen.getByRole("columnheader", { name: /location/i })
+            screen.getByRole("columnheader", {
+                name: /location/i
+            })
         ).toBeVisible();
 
         expect(
             screen.getByRole("cell", {
-                name: sample9Line[0].location,
+                name: sample9Line[0].location
             })
         ).toBeVisible();
     });
 
-    it("should show call sign and data in table", () => {
-        render(<Dispatcher />);
-
-        expect(
-            screen.getByRole("columnheader", { name: /call sign/i })
-        ).toBeVisible();
-
-        expect(
-            screen.getByRole("cell", {
-                name: sample9Line[0].callSign,
-            })
-        ).toBeVisible();
-    });
-
-    it("should show precedence and data in table", () => {
-        render(<Dispatcher />);
-
-        expect(
-            screen.getByRole("columnheader", { name: /precedence/i })
-        ).toBeVisible();
-
-        expect(
-            screen.getByRole("cell", {
-                name: sample9Line[0].precedence,
-            })
-        ).toBeVisible();
-    });
-
-    it("should show special equipment and data in table", () => {
-        render(<Dispatcher />);
+    it("should show call sign and data in table", async () => {
+        await renderDispatcher();
 
         expect(
             screen.getByRole("columnheader", {
-                name: /special equipment/i,
+                name: /call sign/i
             })
         ).toBeVisible();
 
         expect(
             screen.getByRole("cell", {
-                name: sample9Line[0].specialEquipment,
+                name: sample9Line[0].callSign
             })
         ).toBeVisible();
     });
 
-    it("should show security and data in table", () => {
-        render(<Dispatcher />);
+    it("should show precedence and data in table", async () => {
+        await renderDispatcher();
 
         expect(
-            screen.getByRole("columnheader", { name: /security/i })
+            screen.getByRole("columnheader", {
+                name: /precedence/i
+            })
         ).toBeVisible();
 
         expect(
             screen.getByRole("cell", {
-                name: sample9Line[0].security,
+                name: sample9Line[0].precedence
             })
         ).toBeVisible();
     });
 
-    it("should show marking and data in table", () => {
-        render(<Dispatcher />);
+    it("should show special equipment and data in table", async () => {
+        await renderDispatcher();
 
         expect(
-            screen.getByRole("columnheader", { name: /marking/i })
+            screen.getByRole("columnheader", {
+                name: /special equipment/i
+            })
         ).toBeVisible();
 
         expect(
             screen.getByRole("cell", {
-                name: sample9Line[0].marking,
+                name: sample9Line[0].specialEquipment
             })
         ).toBeVisible();
     });
 
-    it("should show details VIEW buttons in table", () => {
-        render(<Dispatcher />);
+    it("should show security and data in table", async () => {
+        await renderDispatcher();
 
         expect(
-            screen.getByRole("columnheader", { name: /details/i })
+            screen.getByRole("columnheader", {
+                name: /security/i
+            })
         ).toBeVisible();
 
         expect(
-            screen.getAllByRole("button", { name: /view/i })
+            screen.getByRole("cell", {
+                name: sample9Line[0].security
+            })
+        ).toBeVisible();
+    });
+
+    it("should show marking and data in table", async () => {
+        await renderDispatcher();
+
+        expect(
+            screen.getByRole("columnheader", {
+                name: /marking/i
+            })
+        ).toBeVisible();
+
+        expect(
+            screen.getByRole("cell", {
+                name: sample9Line[0].marking
+            })
+        ).toBeVisible();
+    });
+
+    it("should show details VIEW buttons in table", async () => {
+        await renderDispatcher();
+
+        expect(
+            screen.getByRole("columnheader", {
+                name: /details/i
+            })
+        ).toBeVisible();
+
+        expect(
+            screen.getAllByRole("button", {
+                name: /view/i
+            })
         ).toHaveLength(sample9Line.length);
     });
 
-    it("should show checkboxes", () => {
-        render(<Dispatcher />);
+    it("should show checkboxes", async () => {
+        await renderDispatcher();
 
         const checkboxes = screen.getAllByRole("checkbox");
 
@@ -136,8 +165,8 @@ describe("dispatcherPage", () => {
         });
     });
 
-    it("should allow selecting a single request", () => {
-        render(<Dispatcher />);
+    it("should allow selecting a single request", async () => {
+        await renderDispatcher();
 
         const checkboxes = screen.getAllByRole("checkbox");
 
@@ -150,8 +179,8 @@ describe("dispatcherPage", () => {
         ).toBeVisible();
     });
 
-    it("should allow selecting multiple requests", () => {
-        render(<Dispatcher />);
+    it("should allow selecting multiple requests", async () => {
+        await renderDispatcher();
 
         const checkboxes = screen.getAllByRole("checkbox");
 
@@ -166,8 +195,8 @@ describe("dispatcherPage", () => {
         ).toBeVisible();
     });
 
-    it("should deselect a request when unchecked", () => {
-        render(<Dispatcher />);
+    it("should deselect a request when unchecked", async () => {
+        await renderDispatcher();
 
         const checkboxes = screen.getAllByRole("checkbox");
 
@@ -181,11 +210,11 @@ describe("dispatcherPage", () => {
         ).not.toBeInTheDocument();
     });
 
-    it("should select all requests using header checkbox", () => {
-        render(<Dispatcher />);
+    it("should select all requests using header checkbox", async () => {
+        await renderDispatcher();
 
         const selectAll = screen.getByRole("checkbox", {
-            name: /select all requests/i,
+            name: /select all requests/i
         });
 
         fireEvent.click(selectAll);
@@ -201,11 +230,11 @@ describe("dispatcherPage", () => {
         ).toBeVisible();
     });
 
-    it("should deselect all requests using header checkbox", () => {
-        render(<Dispatcher />);
+    it("should deselect all requests using header checkbox", async () => {
+        await renderDispatcher();
 
         const selectAll = screen.getByRole("checkbox", {
-            name: /select all requests/i,
+            name: /select all requests/i
         });
 
         fireEvent.click(selectAll);
@@ -222,27 +251,37 @@ describe("dispatcherPage", () => {
         ).not.toBeInTheDocument();
     });
 
-    it("should display ASSIGN button when a request is selected", () => {
-        render(<Dispatcher />);
+    it("should display ASSIGN button when a request is selected", async () => {
+        await renderDispatcher();
 
         expect(
-            screen.queryByRole("button", { name: /^assign$/i })
+            screen.queryByRole("button", {
+                name: /^assign$/i
+            })
         ).not.toBeInTheDocument();
 
-        fireEvent.click(screen.getAllByRole("checkbox")[1]);
+        fireEvent.click(
+            screen.getAllByRole("checkbox")[1]
+        );
 
         expect(
-            screen.getByRole("button", { name: /^assign$/i })
+            screen.getByRole("button", {
+                name: /^assign$/i
+            })
         ).toBeVisible();
     });
 
-    it("should open assignment modal when ASSIGN is clicked", () => {
-        render(<Dispatcher />);
-
-        fireEvent.click(screen.getAllByRole("checkbox")[1]);
+    it("should open assignment modal when ASSIGN is clicked", async () => {
+        await renderDispatcher();
 
         fireEvent.click(
-            screen.getByRole("button", { name: /^assign$/i })
+            screen.getAllByRole("checkbox")[1]
+        );
+
+        fireEvent.click(
+            screen.getByRole("button", {
+                name: /^assign$/i
+            })
         );
 
         expect(
@@ -256,17 +295,23 @@ describe("dispatcherPage", () => {
         ).toBeVisible();
     });
 
-    it("should close assignment modal when CANCEL is clicked", () => {
-        render(<Dispatcher />);
-
-        fireEvent.click(screen.getAllByRole("checkbox")[1]);
+    it("should close assignment modal when CANCEL is clicked", async () => {
+        await renderDispatcher();
 
         fireEvent.click(
-            screen.getByRole("button", { name: /^assign$/i })
+            screen.getAllByRole("checkbox")[1]
         );
 
         fireEvent.click(
-            screen.getByRole("button", { name: /cancel/i })
+            screen.getByRole("button", {
+                name: /^assign$/i
+            })
+        );
+
+        fireEvent.click(
+            screen.getByRole("button", {
+                name: /cancel/i
+            })
         );
 
         expect(
@@ -280,17 +325,17 @@ describe("dispatcherPage", () => {
         ).toBeVisible();
     });
 
-    it("should open VIEW modal for the selected request", () => {
-        render(<Dispatcher />);
+    it("should open VIEW modal for the selected request", async () => {
+        await renderDispatcher();
 
         const viewButtons = screen.getAllByRole("button", {
-            name: /view/i,
+            name: /view/i
         });
 
         fireEvent.click(viewButtons[0]);
 
         const modal = screen.getByRole("dialog", {
-            name: /MEDEVAC Request/i,
+            name: /MEDEVAC Request/i
         });
 
         expect(modal).toBeVisible();
@@ -298,28 +343,30 @@ describe("dispatcherPage", () => {
         expect(modal).toHaveTextContent(sample9Line[0].callSign);
     });
 
-    it("should open VIEW modal with the correct row data", () => {
-        render(<Dispatcher />);
+    it("should open VIEW modal with the correct row data", async () => {
+        await renderDispatcher();
 
         const viewButtons = screen.getAllByRole("button", {
-            name: /view/i,
+            name: /view/i
         });
 
         fireEvent.click(viewButtons[1]);
 
         const modal = screen.getByRole("dialog", {
-            name: /MEDEVAC Request/i,
+            name: /MEDEVAC Request/i
         });
 
         expect(modal).toHaveTextContent(sample9Line[1].location);
         expect(modal).toHaveTextContent(sample9Line[1].callSign);
     });
 
-    it("should close VIEW modal when CANCEL is clicked", () => {
-        render(<Dispatcher />);
+    it("should close VIEW modal when CANCEL is clicked", async () => {
+        await renderDispatcher();
 
         fireEvent.click(
-            screen.getAllByRole("button", { name: /view/i })[0]
+            screen.getAllByRole("button", {
+                name: /view/i
+            })[0]
         );
 
         expect(
@@ -327,7 +374,9 @@ describe("dispatcherPage", () => {
         ).toBeInTheDocument();
 
         fireEvent.click(
-            screen.getByRole("button", { name: /cancel/i })
+            screen.getByRole("button", {
+                name: /cancel/i
+            })
         );
 
         expect(
@@ -335,15 +384,19 @@ describe("dispatcherPage", () => {
         ).not.toBeInTheDocument();
     });
 
-    it("should close VIEW modal using the close button", () => {
-        render(<Dispatcher />);
+    it("should close VIEW modal using the close button", async () => {
+        await renderDispatcher();
 
         fireEvent.click(
-            screen.getAllByRole("button", { name: /view/i })[0]
+            screen.getAllByRole("button", {
+                name: /view/i
+            })[0]
         );
 
         fireEvent.click(
-            screen.getByRole("button", { name: /close/i })
+            screen.getByRole("button", {
+                name: /close/i
+            })
         );
 
         expect(
@@ -351,19 +404,23 @@ describe("dispatcherPage", () => {
         ).not.toBeInTheDocument();
     });
 
-    it("should preserve selected rows after closing VIEW modal", () => {
-        render(<Dispatcher />);
+    it("should preserve selected rows after closing VIEW modal", async () => {
+        await renderDispatcher();
 
         const checkboxes = screen.getAllByRole("checkbox");
 
         fireEvent.click(checkboxes[1]);
 
         fireEvent.click(
-            screen.getAllByRole("button", { name: /view/i })[0]
+            screen.getAllByRole("button", {
+                name: /view/i
+            })[0]
         );
 
         fireEvent.click(
-            screen.getByRole("button", { name: /cancel/i })
+            screen.getByRole("button", {
+                name: /cancel/i
+            })
         );
 
         expect(checkboxes[1]).toBeChecked();
@@ -372,20 +429,25 @@ describe("dispatcherPage", () => {
             screen.getByText("1 selected")
         ).toBeVisible();
     });
-    it("should preserve selected rows after closing VIEW modal", () => {
-        // Keep your existing test code here
-    });
 
-    // NEW TEST GOES HERE
     it("should load requests from the backend", async () => {
-        render(<Dispatcher />);
+
+        vi.mocked(fetchAllRequests).mockResolvedValueOnce([
+            {
+                id: 1,
+                location: "Austin"
+            }
+        ]);
+
+        await renderDispatcher();
 
         await waitFor(() => {
             expect(
-                screen.getByText("Requests loaded from backend: 0")
+                screen.getByText("Requests loaded from backend: 1")
             ).toBeInTheDocument();
         });
-    });
 
+        expect(fetchAllRequests).toHaveBeenCalledTimes(1);
+    });
 
 });

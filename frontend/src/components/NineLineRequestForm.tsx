@@ -14,7 +14,12 @@ export function NineLineRequestForm() {
             return;
         }
         try {
-            const savedRequest = await saveRequest(formData)
+            // const savedRequest = await saveRequest(formData)
+            const savedRequest = await saveRequest({
+                location: formData.location,
+                callSign: formData.contact,
+                numberOfPatients: Number(formData.numberOfPatients)
+            });
             alert(`nine line submitted. ref ID: ${savedRequest.id}`);
         } catch (err) {
             alert(err instanceof Error ? err.message : "Request could not be submitted");
@@ -36,7 +41,8 @@ export function NineLineRequestForm() {
     }
     function isValidPatientNumber(value: string): boolean {
         const check= parseInt(value)
-        if (check < 1 && check > 33){
+        // if (check < 1 && check > 33)
+        if (check < 1 || check > 33 || !Number.isInteger(check)){
         return false;
         }
         return true;

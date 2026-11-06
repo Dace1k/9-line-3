@@ -1,8 +1,18 @@
-export type Request = {
-    id?: number,
-    location: string,
 
-}
+export type Request = {
+    id?: number;
+    location: string;
+    callSign?: string;
+    numberOfPatients?: number;
+    precedence?: string;
+    specialEquipment?: string;
+    litterPatients?: number;
+    ambulatoryPatients?: number;
+    security?: string;
+    marking?: string;
+    patientNationality?: string;
+    nbcContamination?: string;
+};
 
 export interface RequestType {
     location: string;
@@ -49,9 +59,3 @@ export const sample9Line: RequestType[] = [
         details: "View"
     }
 ];
-
-
-
-
-
-
