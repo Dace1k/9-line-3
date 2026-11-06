@@ -6,10 +6,11 @@ export function NineLineRequestForm() {
     const [locationValid, setLocationValid] = useState(true)
     const [contactValid, setContactValid] = useState(true)
     const [patientNumberValid, setPatientNumberValid] = useState(true)
+    const [specialEquipmentValid, setSpecialEquipmentValid] = useState(true)
 
     async function handleSubmit(event: FormEvent) {
         event.preventDefault()
-        if (!locationValid || !contactValid || !patientNumberValid) {
+        if (!locationValid || !contactValid || !patientNumberValid || !specialEquipmentValid) {
             alert("please check form for invalid inputs")
             return;
         }
@@ -42,6 +43,13 @@ export function NineLineRequestForm() {
         return true;
     }
 
+    function isValidSpecialEquipment(value: string): boolean {
+        if (value.trim() === "") {
+            return false;
+        }
+        return true;
+    }
+
 
     function handleChange(event: ChangeEvent<HTMLInputElement>) {
         const {name, value} = event.target;
@@ -59,6 +67,11 @@ export function NineLineRequestForm() {
         if (name === "numberOfPatients") {
             setPatientNumberValid(isValidPatientNumber(value))
         }
+
+        if (name === "specialEquipment") {
+            setSpecialEquipmentValid(isValidSpecialEquipment(value))
+        }
+
     }
 
 
@@ -101,6 +114,15 @@ export function NineLineRequestForm() {
                                className="relative mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3"
                                placeholder="1"/>
                         {patientNumberValid ? <></> : <p role="patientNumberError">Must be more than 1 and Less than 34</p>}
+                    </div>
+
+                    <div>
+                        <label htmlFor="specialEquipment"
+                        className="block text-sm font-medium leading-6 text-gray-900">Special Equipment</label>
+                        <input onChange={handleChange}
+                               id="specialEquipment" name="specialEquipment" type="text"  required
+                               className="relative mt-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 px-3"
+                               placeholder="Special Equipment"/>
                     </div>
 
                     <div className="flex items-center justify-between">

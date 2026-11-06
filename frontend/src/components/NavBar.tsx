@@ -3,6 +3,7 @@ import { NavLink, Route, Routes } from "react-router-dom";
 import { Requester } from "../pages/Requester";
 import Responder from "../pages/Responder";
 import { Dispatcher } from "../pages/Dispatcher";
+import '../NavBar.css'
 
 const pages = [
     { path: "/requester", label: "Requester", element: <Requester /> },
